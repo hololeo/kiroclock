@@ -1,4 +1,4 @@
 # kiroclock
-Kiro Clock / Kiro Eyes
+[Kiro Clock / Kiro Eyes](https://kiroclock.netlify.app/)
 
-<img width="555" height="449" alt="Screenshot 2025-07-18 at 6 09 14 PM" src="https://github.com/user-attachments/assets/5324486b-a5c2-424d-8189-6bddbc39f4f2" />
+[![Screenshot 2025-07-18 at 6 09 14 PM](https://github.com/user-attachments/assets/5324486b-a5c2-424d-8189-6bddbc39f4f2)](https://kiroclock.netlify.app/)
