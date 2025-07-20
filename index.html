@@ -1,272 +1,435 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiro Reset Clock</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .eyes-container {
-            display: flex;
-            gap: 10px;
-        }
-        .eye {
-            width: 60px;
-            height: 60px;
-            background-color: #0b0b0c; /* Darker purple for lurking effect */
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #530f7f;
-            animation: border-pulse 13s infinite;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kiro Reset Clock</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+        <style>
+            .eyes-container {
+                display: flex;
+                gap: 10px;
+            }
+            .eye {
+                width: 60px;
+                height: 60px;
+                background-color: #0b0b0c;
+                border-radius: 50%;
+                position: relative;
+                overflow: hidden;
+                border: 2px solid #530f7f;
+                animation: border-pulse 13s infinite;
+            }
 
-        @keyframes border-pulse {
-            0% { border-color: #530f7f; }
-            38.46% { border-color: #8b5cf6; }
-            100% { border-color: #530f7f; }
-        }
-        .pupil {
-            width: 23px;
-            height: 17px;
-            background-color: #7069a3; /* Pupil color */
-            border-radius: 4px; /* Slightly rounded corners for a slitted look */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: height 0.2s ease-in-out; /* Add transition for blinking */
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white font-sans flex flex-col justify-center items-center min-h-screen m-0 overflow-hidden">
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center pt-4">
-        <span class="text-purple-400">Kiro</span> <span class="bg-white text-black px-2 rounded">Resets</span> <span class="text-purple-400">in:</span>
-    </h1>
-    <div id="countdown" class="text-6xl sm:text-7xl md:text-8xl font-extrabold tracking-widest text-green-400" style="text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);"></div>
+            @keyframes border-pulse {
+                0% {
+                    border-color: #530f7f;
+                }
+                38.46% {
+                    border-color: #8b5cf6;
+                }
+                100% {
+                    border-color: #530f7f;
+                }
+            }
+            .pupil {
+                width: 23px;
+                height: 17px;
+                background-color: #7069a3;
+                border-radius: 4px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: height 0.2s ease-in-out;
+            }
+        </style>
+    </head>
+    <body
+        class="bg-gray-900 text-white font-sans flex flex-col justify-center items-center min-h-screen m-0 overflow-hidden"
+    >
+        <h1
+            class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-center pt-4"
+        >
+            <span class="text-purple-400">Kiro</span>
+            <span class="bg-white text-black px-2 rounded">Resets</span>
+            <span class="text-purple-400">in:</span>
+        </h1>
+        <div
+            id="countdown"
+            class="text-6xl sm:text-7xl md:text-8xl font-extrabold tracking-widest text-green-400"
+            style="text-shadow: 0 0 10px rgba(0, 0, 0, 0.5)"
+        ></div>
 
-    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas>
+        <canvas
+            id="confetti-canvas"
+            style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 9999;
+            "
+        ></canvas>
 
-    <!-- Lurking Eyes -->
-    <div class="eyes-container" style="position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 10000;">
-        <div class="eye">
-            <div class="pupil"></div>
+        <div
+            class="eyes-container"
+            style="
+                position: fixed;
+                top: 50px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 10000;
+            "
+        >
+            <div class="eye">
+                <div class="pupil"></div>
+            </div>
+            <div class="eye">
+                <div class="pupil"></div>
+            </div>
         </div>
-        <div class="eye">
-            <div class="pupil"></div>
-        </div>
-    </div>
+        <br /><br />
 
-    <a href="https://kiro.dev/blog/code-with-kiro-hackathon/" target="_blank" class="absolute bottom-8 text-center no-underline text-white">
         <div class="text-lg sm:text-xl font-bold mb-2 text-gray-300">
             Hackathon submission deadline:
         </div>
-        <div id="hackathon-countdown" class="text-2xl sm:text-3xl font-semibold text-blue-400"></div>
-        <div class="text-lg mt-2 text-gray-400">
-            Made with ❤️ Kiro
+        <div
+            id="hackathon-countdown"
+            class="text-2xl sm:text-3xl font-semibold text-blue-400"
+        ></div>
+        <a
+            href="https://kiro.dev/blog/code-with-kiro-hackathon/"
+            target="_blank"
+            class="absolute bottom-1 text-center no-underline text-white"
+            ><div class="text-lg mt-2 text-gray-400">Made with ❤️ Kiro</div>
+        </a>
+
+        <div>
+            <br />
+            <script
+                type="text/javascript"
+                src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button"
+                data-slug="hololeo"
+                data-color="#000"
+                data-emoji="☕"
+                data-font="Cookie"
+                data-text="Buy me coffee"
+                data-outline-color="#000000"
+                data-font-color="#666"
+                data-coffee-color="#FFDD00"
+            ></script>
         </div>
-    </a>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script>
-        const countdownElement = document.getElementById('countdown');
-        const confettiCanvas = document.getElementById('confetti-canvas');
-        const myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
+        <audio id="alarm-audio" preload="auto" style="display: none">
+            <source src="alarm.mp3" type="audio/mpeg" />
+        </audio>
 
-        function setCanvasSize() {
-            confettiCanvas.width = window.innerWidth;
-            confettiCanvas.height = window.innerHeight;
-        }
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+        <script>
+            const alarm = {
+                audio: document.getElementById("alarm-audio"),
+                triggered: false,
+                play() {
+                    if (this.audio) {
+                        this.audio.currentTime = 0;
+                        this.audio.play().catch(() => {});
+                        this.triggered = true;
+                    }
+                },
+                stop() {
+                    if (this.audio) {
+                        this.audio.pause();
+                        this.audio.currentTime = 0;
+                    }
+                },
+                reset() {
+                    this.triggered = false;
+                    this.stop();
+                },
+            };
 
-        // Set initial size
-        setCanvasSize();
+            let testMode = false;
+            let testStartTime = 0;
 
-        // Update size on window resize
-        window.addEventListener('resize', setCanvasSize);
-
-        let forceTrigger = false;
-
-        function getNextUTCMidnight() {
-            const now = new Date();
-            const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0));
-            return nextMidnight;
-        }
-
-        function updateCountdown() {
-            const now = new Date();
-            let targetDate = getNextUTCMidnight();
-
-            // If the target date is in the past (e.g., if the script loads just after midnight UTC),
-            // set it for the next day's midnight.
-            if (now.getTime() >= targetDate.getTime()) {
-                targetDate = getNextUTCMidnight(); // This will correctly calculate for the day after
-            }
-
-            let distance = targetDate.getTime() - now.getTime();
-
-            if (forceTrigger) {
-                distance = -1; // Force trigger confetti
-                forceTrigger = false; // Reset the flag
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            countdownElement.innerHTML =
-                `${hours.toString().padStart(2, '0')}:` +
-                `${minutes.toString().padStart(2, '0')}:` +
-                `${seconds.toString().padStart(2, '0')}`;
-
-            if (distance < 0) {
-                countdownElement.innerHTML = "00:00:00";
-                triggerConfetti();
-                setTimeout(triggerConfetti, 500);
-                setTimeout(triggerConfetti, 1000);
-                // Immediately set the next target date to avoid multiple confetti triggers for the same event
-                // and ensure the countdown restarts correctly for the next midnight.
-                setTimeout(() => {
-                    updateCountdown(); // Recalculate for the next midnight
-                }, 1000); // Wait a second before recalculating to avoid immediate re-trigger
-            }
-        }
-
-        function triggerConfetti() {
-            myConfetti({
-                particleCount: 200,
-                spread: 360,
-                origin: { x: 0.5, y: 0.5 },
-                scalar: 5.0,
-                shapes: ['circle', 'square'],
-                colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'] // Bright colors for confetti
+            const countdownElement = document.getElementById("countdown");
+            const confettiCanvas = document.getElementById("confetti-canvas");
+            const myConfetti = confetti.create(confettiCanvas, {
+                resize: true,
+                useWorker: true,
             });
-        }
 
-        // Initial call
-        updateCountdown();
-
-        // Update every second
-        setInterval(updateCountdown, 1000);
-
-        // Hackathon Countdown
-        const hackathonCountdownElement = document.getElementById('hackathon-countdown');
-        const hackathonTargetDate = new Date(Date.UTC(2025, 7, 25, 19, 0, 0)); // August 25, 2025, 12:00 PM PT (19:00 UTC)
-
-        function updateHackathonCountdown() {
-            const now = new Date();
-            const distance = hackathonTargetDate.getTime() - now.getTime();
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            if (distance < 0) {
-                hackathonCountdownElement.innerHTML = "Hackathon has started!";
-            } else {
-                hackathonCountdownElement.innerHTML =
-                    `${days} days ` +
-                    `${hours.toString().padStart(2, '0')}:` +
-                    `${minutes.toString().padStart(2, '0')}:` +
-                    `${seconds.toString().padStart(2, '0')}`;
+            function setCanvasSize() {
+                confettiCanvas.width = window.innerWidth;
+                confettiCanvas.height = window.innerHeight;
             }
-        }
 
-        // Initial call for hackathon countdown
-        updateHackathonCountdown();
+            setCanvasSize();
+            window.addEventListener("resize", setCanvasSize);
 
-        // Update hackathon countdown every second
-        setInterval(updateHackathonCountdown, 1000);
+            let forceTrigger = false;
 
-        // Trigger confetti on 'c' key press
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'c' || event.key === 'C') {
-                triggerConfetti();
-            } else if (event.key === 't' || event.key === 'T') {
-                forceTrigger = true;
-                updateCountdown(); // Immediately update to trigger confetti
-            } else if (event.key === 'f' || event.key === 'F') {
-                if (document.fullscreenElement) {
-                    document.exitFullscreen();
+            function getNextUTCMidnight() {
+                const now = new Date();
+                const nextMidnight = new Date(
+                    Date.UTC(
+                        now.getUTCFullYear(),
+                        now.getUTCMonth(),
+                        now.getUTCDate() + 1,
+                        0,
+                        0,
+                        0,
+                        0,
+                    ),
+                );
+                return nextMidnight;
+            }
+
+            function updateCountdown() {
+                const now = new Date();
+                let targetDate;
+
+                if (testMode) {
+                    targetDate = new Date(testStartTime + 310 * 1000);
                 } else {
-                    document.documentElement.requestFullscreen();
+                    targetDate = getNextUTCMidnight();
+                    if (now.getTime() >= targetDate.getTime()) {
+                        targetDate = getNextUTCMidnight();
+                    }
+                }
+
+                let distance = targetDate.getTime() - now.getTime();
+
+                if (forceTrigger) {
+                    distance = -1;
+                    forceTrigger = false;
+                }
+
+                const totalSeconds = Math.floor(distance / 1000);
+                if (totalSeconds === 309 && !alarm.triggered) {
+                    alarm.play();
+                }
+                if (totalSeconds > 309) {
+                    alarm.reset();
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor(
+                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+                );
+                const minutes = Math.floor(
+                    (distance % (1000 * 60 * 60)) / (1000 * 60),
+                );
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const formattedTime =
+                    `${hours.toString().padStart(2, "0")}:` +
+                    `${minutes.toString().padStart(2, "0")}:` +
+                    `${seconds.toString().padStart(2, "0")}`;
+                countdownElement.innerHTML = formattedTime;
+                document.title = `👻 ${formattedTime}`;
+
+                if (distance < 0) {
+                    countdownElement.innerHTML = "00:00:00";
+                    triggerConfetti();
+                    setTimeout(triggerConfetti, 500);
+                    setTimeout(triggerConfetti, 1000);
+                    setTimeout(() => {
+                        testMode = false;
+                        updateCountdown();
+                    }, 1000);
                 }
             }
-        });
 
-        // Eye tracking
-        let eyes;
-        let mouseMoveTimeout;
+            function triggerConfetti() {
+                myConfetti({
+                    particleCount: 200,
+                    spread: 360,
+                    origin: { x: 0.5, y: 0.5 },
+                    scalar: 5.0,
+                    shapes: ["circle", "square"],
+                    colors: [
+                        "#a864fd",
+                        "#29cdff",
+                        "#78ff44",
+                        "#ff718d",
+                        "#fdff6a",
+                    ],
+                });
+            }
 
-        function resetPupilPosition() {
-            eyes.forEach(eye => {
-                const pupil = eye.querySelector('.pupil');
-                pupil.style.transform = `translate(-50%, -50%)`; // Reset to center
-            });
-        }
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
 
-        document.addEventListener('DOMContentLoaded', () => {
-            eyes = document.querySelectorAll('.eye');
-            startBlinking(); // Start blinking when the page loads
-            // Initial reset to center
-            resetPupilPosition();
+            setInterval(
+                () => {
+                    location.reload();
+                },
+                15 * 60 * 1000,
+            );
 
-            // Add click listener to pupils for manual blink
-            eyes.forEach(eye => {
-                const pupil = eye.querySelector('.pupil');
-                pupil.addEventListener('click', blinkEyes);
-            });
-        });
+            const hackathonCountdownElement = document.getElementById(
+                "hackathon-countdown",
+            );
+            const hackathonTargetDate = new Date(
+                Date.UTC(2025, 7, 25, 19, 0, 0),
+            );
 
-        document.addEventListener('mousemove', (event) => {
-            if (!eyes) return; // Ensure eyes are loaded
+            function updateHackathonCountdown() {
+                const now = new Date();
+                const distance = hackathonTargetDate.getTime() - now.getTime();
 
-            clearTimeout(mouseMoveTimeout); // Clear existing timeout
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor(
+                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+                );
+                const minutes = Math.floor(
+                    (distance % (1000 * 60 * 60)) / (1000 * 60),
+                );
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            eyes.forEach(eye => {
-                const pupil = eye.querySelector('.pupil');
-                const eyeRect = eye.getBoundingClientRect();
-                const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-                const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-
-                const angle = Math.atan2(event.clientY - eyeCenterY, event.clientX - eyeCenterX);
-                const distance = Math.min(eyeRect.width / 4, Math.sqrt(Math.pow(event.clientX - eyeCenterX, 2) + Math.pow(event.clientY - eyeCenterY, 2)));
-
-                const pupilX = distance * Math.cos(angle);
-                const pupilY = distance * Math.sin(angle);
-
-                pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
-            });
-
-            // Set new timeout to reset pupil position after 10 seconds of inactivity
-            mouseMoveTimeout = setTimeout(resetPupilPosition, 10000); // 10 seconds
-        });
-
-        // Blinking functionality
-        function blinkEyes() {
-            eyes.forEach(eye => {
-                const pupil = eye.querySelector('.pupil');
-                pupil.style.height = '4px'; // Blink
-                setTimeout(() => {
-                    pupil.style.height = '17px'; // Open
-                }, 100); // Short blink duration
-            });
-        }
-
-        function startBlinking() {
-            const randomInterval = Math.random() * (5000 - 3000) + 3000; // Random between 3-5 seconds
-            setTimeout(() => {
-                blinkEyes();
-                if (Math.random() < 0.3) { // 30% chance of double blink
-                    setTimeout(() => {
-                        blinkEyes();
-                    }, 200); // Short delay for double blink
+                if (distance < 0) {
+                    hackathonCountdownElement.innerHTML =
+                        "Hackathon has started!";
+                } else {
+                    hackathonCountdownElement.innerHTML =
+                        `${days} days ` +
+                        `${hours.toString().padStart(2, "0")}:` +
+                        `${minutes.toString().padStart(2, "0")}:` +
+                        `${seconds.toString().padStart(2, "0")}`;
                 }
-                startBlinking(); // Schedule next blink
-            }, randomInterval);
-        }
+            }
 
-    </script>
-</body>
+            updateHackathonCountdown();
+            setInterval(updateHackathonCountdown, 1000);
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "c" || event.key === "C") {
+                    triggerConfetti();
+                } else if (event.key === "t" || event.key === "T") {
+                    forceTrigger = true;
+                    updateCountdown();
+                } else if (event.key === "f" || event.key === "F") {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        document.documentElement.requestFullscreen();
+                    }
+                } else if (event.key === "m" || event.key === "M") {
+                    testMode = !testMode;
+                    if (testMode) {
+                        testStartTime = new Date().getTime();
+                    }
+                    alarm.reset();
+                }
+            });
+
+            let eyes;
+            let mouseMoveTimeout;
+
+            function resetPupilPosition() {
+                eyes.forEach((eye) => {
+                    const pupil = eye.querySelector(".pupil");
+                    pupil.style.transform = `translate(-50%, -50%)`;
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                eyes = document.querySelectorAll(".eye");
+                startBlinking();
+                resetPupilPosition();
+
+                eyes.forEach((eye) => {
+                    const pupil = eye.querySelector(".pupil");
+                    pupil.addEventListener("click", blinkEyes);
+                });
+
+                alarm.audio.addEventListener("error", () => {
+                    console.log("Audio file not found");
+                });
+            });
+
+            document.addEventListener("mousemove", (event) => {
+                if (!eyes) return;
+
+                clearTimeout(mouseMoveTimeout);
+
+                eyes.forEach((eye) => {
+                    const pupil = eye.querySelector(".pupil");
+                    const eyeRect = eye.getBoundingClientRect();
+                    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+                    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+                    const angle = Math.atan2(
+                        event.clientY - eyeCenterY,
+                        event.clientX - eyeCenterX,
+                    );
+                    const distance = Math.min(
+                        eyeRect.width / 4,
+                        Math.sqrt(
+                            Math.pow(event.clientX - eyeCenterX, 2) +
+                                Math.pow(event.clientY - eyeCenterY, 2),
+                        ),
+                    );
+
+                    const pupilX = distance * Math.cos(angle);
+                    const pupilY = distance * Math.sin(angle);
+
+                    pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+                });
+
+                mouseMoveTimeout = setTimeout(resetPupilPosition, 10000);
+            });
+
+            function blinkEyes() {
+                eyes.forEach((eye) => {
+                    const pupil = eye.querySelector(".pupil");
+                    pupil.style.height = "4px";
+                    setTimeout(() => {
+                        pupil.style.height = "17px";
+                    }, 100);
+                });
+            }
+
+            function startBlinking() {
+                const randomInterval = Math.random() * (5000 - 3000) + 3000;
+                setTimeout(() => {
+                    blinkEyes();
+                    if (Math.random() < 0.3) {
+                        setTimeout(() => {
+                            blinkEyes();
+                        }, 200);
+                    }
+                    startBlinking();
+                }, randomInterval);
+            }
+        </script>
+
+        <style>
+            .bmc-btn {
+                min-width: 210px;
+                color: #666;
+                background-color: #000 !important;
+                height: 44px;
+                border-radius: 12px;
+                font-size: 28px;
+                font-weight: Normal;
+                border: none;
+                padding: 0px 24px;
+                line-height: 27px;
+                text-decoration: none !important;
+                display: inline-flex !important;
+                align-items: center;
+                font-family: "Cookie", cursive !important;
+                -webkit-box-sizing: border-box !important;
+                box-sizing: border-box !important;
+            }
+        </style>
+    </body>
 </html>
